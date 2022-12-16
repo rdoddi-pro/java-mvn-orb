@@ -1,13 +1,12 @@
 version: 2.1
 
+# Description must be more than 64-chars.
 description: >
-  Sample orb description
-# What will your orb allow users to accomplish?
-# Descriptions should be short, simple, and informative.
+  Orb for verifying, building, packaging, and publishing Java Spring Boot artifacts to (public/private) container registry.
 
 # This information will be displayed in the orb registry and is not mandatory.
 display:
-  home_url: "https://www.example.com/docs"
+  home_url: "https://github.com/rdoddi-pro/mvn-java-orb"
   source_url: "https://github.com/rdoddi-pro/mvn-java-orb"
 
 # If your orb requires other orbs, you can import them like this. Otherwise remove the "orbs" stanza.
