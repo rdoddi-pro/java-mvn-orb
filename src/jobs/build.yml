@@ -1,0 +1,20 @@
+# CircleCI job to build and deploy mvn based java project.
+# Author: Ramesh Doddi
+
+description: >
+  Builds maven project using JDK executor and 
+  deploys artifacts to specified repository.
+executor: openjdk
+working_directory: ~/project
+parameters:
+  mvn_opts:
+    type: string
+    default: "-s .circleci/mvn-settings.xml"
+    description: > 
+      Maven command line override options, 
+      helpful to centralize private repo config in maven-settings.xml file.
+steps:
+  - checkout
+  - run:
+      name: Deploy mvn artifact to repository
+      command: mvn << parameters.mvn_opts >> -DskipTests deploy

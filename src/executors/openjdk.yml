@@ -1,0 +1,10 @@
+description: >
+  Open JDK used for compiling Java.
+docker:
+  - image: 'cimg/openjdk:<<parameters.tag>>'
+parameters:
+  tag:
+    default: 17.0
+    description: >
+      Pick a specific image variant: https://github.com/CircleCI-Public/cimg-openjdk
+    type: string
