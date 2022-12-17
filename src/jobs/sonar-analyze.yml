@@ -1,0 +1,27 @@
+# CircleCI job.
+# Author: Ramesh Doddi
+
+description: >
+  Analyzes the code using sonar stack and publishes report to sonar repository.
+
+executor: openjdk
+
+working_directory: ~/project
+
+parameters:
+  projectKey:
+    type: string
+    default: ${CIRCLE_PROJECT_REPONAME}
+    description: >
+      Sonar project key (set this at your sonarcloud account and supply here). Default is project repo name.
+  token:
+    type: string
+    default: ''
+    description: >
+      Provide sonar login token (create this at your sonarcloud account).
+
+steps:
+  - checkout
+  - run:
+      name: Publish code coverage report to sonarcloud
+      command: mvn verify sonar:sonar -Dsonar.projectKey=<< parameters.projectKey >> -Dsonar.login=<< parameters.token >>
