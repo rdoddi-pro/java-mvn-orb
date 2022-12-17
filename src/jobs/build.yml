@@ -12,10 +12,10 @@ working_directory: ~/project
 parameters:
   mvn_opts:
     type: string
-    default: "-s .circleci/mvn-settings.xml"
+    default: ''
     description: >
       Maven command line override options,
-      helpful to centralize private repo config in maven-settings.xml file.
+      helpful to centralize private repo config like (-s .circleci/mvn-settings.xml).
 
 steps:
   - checkout
