@@ -23,5 +23,8 @@ parameters:
 steps:
   - checkout
   - run:
+      environment:
+        PROJECT_KEY: << parameters.projectKey >>
+        TOKEN: << parameters.token >>
       name: Publish code coverage report to sonarcloud
       command: <<include(scripts/sonar-analyze.sh)>>
