@@ -34,4 +34,6 @@ steps:
         PROJECT_KEY: << parameters.project_key >>
         TOKEN: << parameters.token >>
       name: Publish code coverage report to sonarcloud
-      command: <<include(scripts/sonar-analyze.sh)>>
+      # command: <<include(scripts/sonar-analyze.sh)>>
+      command: >
+        mvn "${MVN_OPTS}" verify sonar:sonar -Dsonar.projectKey="${PROJECT_KEY}" -Dsonar.login=${TOKEN}
