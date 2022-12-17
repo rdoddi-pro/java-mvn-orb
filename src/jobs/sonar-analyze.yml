@@ -24,4 +24,4 @@ steps:
   - checkout
   - run:
       name: Publish code coverage report to sonarcloud
-      command: mvn verify sonar:sonar -Dsonar.projectKey=<< parameters.projectKey >> -Dsonar.login=<< parameters.token >>
+      command: <<include(scripts/sonar-analyze.sh)>>
