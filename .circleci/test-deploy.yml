@@ -10,18 +10,18 @@ filters: &filters
 jobs:
   # Create a job to test the commands of your orbs.
   # You may want to add additional validation steps to ensure the commands are working as expected.
-  executor: openjdk
   command-tests:
     steps:
       - checkout
       # Run your orb's commands to validate them.
       - mvn-java-orb/greet
-      - mvn-java-orb/sonar-analyze
 
 workflows:
   test-deploy:
     jobs:
       # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
+      - mvn-java-orb/sonar-analyze:
+          mvn_opts: ''
       - command-tests:
           filters: *filters
       - orb-tools/pack:
