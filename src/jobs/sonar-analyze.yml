@@ -9,7 +9,13 @@ executor: openjdk
 working_directory: ~/project
 
 parameters:
-  projectKey:
+  mvn_opts:
+    type: string
+    default: ''
+    description: >
+      Maven command line override options,
+      helpful to centralize private repo config like (-s .circleci/mvn-settings.xml).
+  project_key:
     type: string
     default: ${CIRCLE_PROJECT_REPONAME}
     description: >
@@ -24,7 +30,8 @@ steps:
   - checkout
   - run:
       environment:
-        PROJECT_KEY: << parameters.projectKey >>
+        MVN_OPTS: << parameters.mvn_opts >>
+        PROJECT_KEY: << parameters.project_key >>
         TOKEN: << parameters.token >>
       name: Publish code coverage report to sonarcloud
       command: <<include(scripts/sonar-analyze.sh)>>

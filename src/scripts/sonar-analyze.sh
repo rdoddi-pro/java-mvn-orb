@@ -1,3 +1,3 @@
 #!/bin/bash
 
-mvn install verify sonar:sonar -Dsonar.projectKey="${PROJECT_KEY:?}" -Dsonar.login="${TOKEN:?}"
+mvn "${MVN_OPTS:?}" verify sonar:sonar -Dsonar.projectKey="${PROJECT_KEY:?}" -Dsonar.login="${TOKEN:?}"
