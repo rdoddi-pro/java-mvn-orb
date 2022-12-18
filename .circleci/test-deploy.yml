@@ -10,7 +10,7 @@ filters: &filters
 parameters:
   docker-index:
     type: string
-    default: 'hub.docker.com'
+    default: ''
 
 jobs:
   # Create a job to test the commands of your orbs.
