@@ -31,6 +31,7 @@ steps:
   - when:
       condition: <<parameters.mvn-settings-file>>
       steps:
-        - run: mkdir ~/.m2
-        - run: cp <<parameters.mvn-settings-file>> ~/.m2/settings.xml
+        - run:
+            name: Copy the custom mvn settings
+            command: mkdir ~/.m2 && cp <<parameters.mvn-settings-file>> ~/.m2/settings.xml
   - run: mvn verify sonar:sonar
