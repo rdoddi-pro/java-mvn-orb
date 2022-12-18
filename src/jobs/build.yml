@@ -10,15 +10,16 @@ executor: openjdk
 working_directory: ~/project
 
 parameters:
-  mvn_opts:
+  mvn-settings-file:
     type: string
     default: ''
     description: >
-      Maven command line override options,
-      helpful to centralize private repo config like (-s .circleci/mvn-settings.xml).
+      Custom mvn settings file path. 
+      Helpful to centralize private repos, plugin, configs.
+      Example: .circleci/mvn-settings.xml
 
 steps:
   - checkout
   - run:
       name: Deploy mvn artifact to repository
-      command: mvn << parameters.mvn_opts >> -DskipTests deploy
+      command: <<include(scripts/build.sh)>>
