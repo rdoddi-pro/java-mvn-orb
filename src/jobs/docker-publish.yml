@@ -5,14 +5,7 @@ description: >
   Builds and publishes docker container image to managed/hosted repo.
 
 executor: node
-  
 resource_class: small
-
-references:
-  workspace_root: &workspace_root /tmp/workspace
-  attach_workspace: &attach_workspace
-    attach_workspace:
-      at: *workspace_root
 
 parameters:
   build-env:
@@ -28,9 +21,13 @@ parameters:
     default: Dockerfile
   docker-index:
     type: string
+  workspace-root:
+    type: string
+    default: /tmp/workspace
+    description: where shall we mount the workspace
 
 environment:
-  WORKSPACE_ROOT: *workspace_root
+  WORKSPACE_ROOT: /tmp/workspace
   DOCKER_BUILDKIT: 1
   DOCKER_FILE: << parameters.docker-file >>
   CACHE_IMAGE: << parameters.docker-index >>/<< parameters.app-name >>
@@ -40,7 +37,9 @@ environment:
 working_directory: ~/project/<< parameters.build-env >>
 
 steps:
-  - *attach_workspace
+  - attach_workspace:
+      attach_workspace:
+        at: << parameters.workspace-root >>
   - run:
       name: "(debug) List workspace content"
       command: find $WORKSPACE_ROOT -maxdepth 2 -type f
