@@ -28,9 +28,9 @@ steps:
   - run:
       name: Job pre-requisites (README)
       command: << include(scripts/analyze-job-help.sh) >>
-  - run:
-      environment:
-        MVN_SETTINGS_FILE: << parameters.mvn-settings-file >>
-        SONAR_PROJECT_KEY: << parameters.project-key >>
-      name: Publish code coverage report to sonarcloud
-      command: << include(scripts/analyze.sh) >>
+  - when:
+      condition: <<parameters.mvn-settings-file>>
+      steps:
+        - run: mkdir ~/.m2
+        - run: cp <<parameters.mvn-settings-file>> ~/.m2/settings.xml
+  - run: mvn verify sonar:sonar
