@@ -28,4 +28,6 @@ steps:
         - run:
             name: Copy the custom mvn settings
             command: mkdir ~/.m2 && cp <<parameters.mvn-settings-file>> ~/.m2/settings.xml
-  - run: mvn verify sonar:sonar
+  - run:
+      name: Verify and publish report to SonarCloud
+      command: mvn verify sonar:sonar
