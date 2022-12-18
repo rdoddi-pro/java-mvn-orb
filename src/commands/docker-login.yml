@@ -1,0 +1,15 @@
+description: >
+  Command to login to container repo (managed/hosted)
+parameters:
+  index-url:
+    type: string
+    description: container index url
+steps:
+  - run:
+      name: Pre-requisites (README)
+      command: echo "set NEXUS_RM_USERNAME, NEXUS_RM_PASSWORD thru context"
+  - run:
+      environment:
+        INDEX_URL: <<parameters.index-url>>
+      name: Login to container index
+      command: << include(scripts/docker-login.sh) >>

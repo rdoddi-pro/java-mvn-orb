@@ -17,6 +17,12 @@ parameters:
       Custom mvn settings file path.
       Helpful to centralize private repos, plugin, configs.
       Example: .circleci/mvn-settings.xml
+  main-module-path:
+    type: string
+    default: ''
+    description: >
+      If your project has multi-modules architecture (e.g. service, client),
+      you can specify the module-path to build container using it's output.
 
 steps:
   - checkout
@@ -25,3 +31,9 @@ steps:
         MVN_SETTINGS_FILE: << parameters.mvn-settings-file >>
       name: Deploy mvn artifact to repository
       command: << include(scripts/build.sh) >>
+  - persist_to_workspace:
+      root: ~/project/<< parameters.main-module-path >>
+      paths:
+        - target/*.jar
+        - pom.xml
+        - Dockerfile*
