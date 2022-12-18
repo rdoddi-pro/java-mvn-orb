@@ -33,8 +33,7 @@ environment:
   CACHE_IMAGE: << parameters.docker-index-url >>/<< parameters.app-name >>
   APP_VERSION: << parameters.app-version >>
 
-# note: interpolation won't work for, working_directory: ~/project/$BUILD_ENV
-working_directory: ~/project/<< parameters.build-env >>
+working_directory: ~/project
 
 steps:
   - attach_workspace:
@@ -44,8 +43,7 @@ steps:
       command: find $WORKSPACE_ROOT -maxdepth 2 -type f
   - run:
       name: "Copy build content from upstream jobs"
-      command: |
-        cp -r $WORKSPACE_ROOT/<< parameters.build-env >>/service/* ./
+      command: cp -r $WORKSPACE_ROOT/* ./
   - setup_remote_docker:
       version: 20.10.14
       docker_layer_caching: true
