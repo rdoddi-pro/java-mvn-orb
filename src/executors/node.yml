@@ -1,5 +1,5 @@
 description: >
-  Official supported node executor. 
+  Official supported node executor.
   It's recommend to use similar build and runtime environment.
 docker:
   - image: 'cimg/node:<<parameters.tag>>'
