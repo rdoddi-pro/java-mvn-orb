@@ -38,8 +38,7 @@ working_directory: ~/project/<< parameters.build-env >>
 
 steps:
   - attach_workspace:
-      attach_workspace:
-        at: << parameters.workspace-root >>
+      at: << parameters.workspace-root >>
   - run:
       name: "(debug) List workspace content"
       command: find $WORKSPACE_ROOT -maxdepth 2 -type f
