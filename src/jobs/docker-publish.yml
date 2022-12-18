@@ -19,7 +19,7 @@ parameters:
   docker-file:
     type: string
     default: Dockerfile
-  docker-index:
+  docker-index-url:
     type: string
   workspace-root:
     type: string
@@ -30,7 +30,7 @@ environment:
   WORKSPACE_ROOT: /tmp/workspace
   DOCKER_BUILDKIT: 1
   DOCKER_FILE: << parameters.docker-file >>
-  CACHE_IMAGE: << parameters.docker-index >>/<< parameters.app-name >>
+  CACHE_IMAGE: << parameters.docker-index-url >>/<< parameters.app-name >>
   APP_VERSION: << parameters.app-version >>
 
 # note: interpolation won't work for, working_directory: ~/project/$BUILD_ENV
@@ -51,7 +51,7 @@ steps:
       version: 20.10.14
       docker_layer_caching: true
   - docker-login:
-      docker-index: << parameters.docker-index >>
+      index-url: << parameters.docker-index-url >>
   - run:
       name: "Build from dockerfile"
       command: << include(scripts/docker-build.sh) >>
