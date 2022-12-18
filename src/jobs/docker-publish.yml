@@ -1,0 +1,77 @@
+# CircleCI job.
+# Author: Ramesh Doddi
+
+description: >
+  Builds and publishes docker container image to managed/hosted repo.
+
+executor: node
+  
+resource_class: small
+
+references:
+  workspace_root: &workspace_root /tmp/workspace
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+
+parameters:
+  build-env:
+    type: string
+    default: dev
+  app-name:
+    type: string
+  app-version:
+    type: string
+    description: compute this using your project build file
+  docker-file:
+    type: string
+    default: Dockerfile
+  docker-index:
+    type: string
+
+environment:
+  WORKSPACE_ROOT: *workspace_root
+  DOCKER_BUILDKIT: 1
+  DOCKER_FILE: << parameters.docker-file >>
+  CACHE_IMAGE: << parameters.docker-index >>/<< parameters.app-name >>
+  APP_VERSION: << parameters.app-version >>
+
+# note: interpolation won't work for, working_directory: ~/project/$BUILD_ENV
+working_directory: ~/project/<< parameters.build-env >>
+
+steps:
+  - *attach_workspace
+  - run:
+      name: "(debug) List workspace content"
+      command: find $WORKSPACE_ROOT -maxdepth 2 -type f
+  - run:
+      name: "Copy build content from upstream jobs"
+      command: |
+        cp -r $WORKSPACE_ROOT/<< parameters.build-env >>/* ./
+  - setup_remote_docker:
+      version: 20.10.14
+      docker_layer_caching: true
+  - docker-login:
+      docker-index: << parameters.docker-index >>
+  - run:
+      name: "Build from dockerfile"
+      command: << include(scripts/docker-build.sh) >>
+  - when:
+      condition:
+        # execute the following step for dev-cd pipeline
+        equal: [<< parameters.build-env >>, "dev"]
+      steps:
+        - run:
+            name: "Add the 'snapshot' tag for dev images"
+            command: << include(scripts/docker-tag-snapshot.sh) >>
+  - when:
+      condition:
+        # execute the following step only for test-cd pipeline
+        equal: [<< parameters.build-env >>, "test"]
+      steps:
+        - run:
+            name: "Add the 'rc' tag for Release Candidate images"
+            command: << include(scripts/docker-tag-rc.sh) >>
+  - run:
+      name: "Push to container registry"
+      command: docker push --all-tags $CACHE_IMAGE
