@@ -12,14 +12,14 @@ parameters:
   mvn-settings-file:
     type: string
     default: ''
-    description: >
+    description: |
       Custom mvn settings file path. 
       Helpful to centralize private repos, plugin, configs.
       Example: .circleci/mvn-settings.xml
   project-key:
     type: string
     default: honeybricks_content-svc
-    description: >
+    description: |
       Sonar project key (set this at your sonarcloud account and supply here). 
       Default is project repo name.
 
