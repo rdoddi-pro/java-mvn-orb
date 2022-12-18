@@ -14,7 +14,7 @@ parameters:
     type: string
     default: ''
     description: >
-      Custom mvn settings file path. 
+      Custom mvn settings file path.
       Helpful to centralize private repos, plugin, configs.
       Example: .circleci/mvn-settings.xml
 
