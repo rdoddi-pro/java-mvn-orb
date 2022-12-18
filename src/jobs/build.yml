@@ -37,6 +37,3 @@ steps:
         - target/*.jar
         - pom.xml
         - Dockerfile*
-  - run:
-      name: "(debug) List persisted assets"
-      command: find $WORKSPACE_ROOT -maxdepth 2 -type f
