@@ -20,18 +20,17 @@ parameters:
     type: string
     default: honeybricks_content-svc
     description: >
-      Sonar project key (set this at your sonarcloud account and supply here). Default is project repo name.
+      Sonar project key (set this at your sonarcloud account and supply here). 
+      Default is project repo name.
 
 steps:
   - checkout
   - run:
       name: Job pre-requisites (README)
-      command: |
-        echo "You must supply following variables in circleci context project/org level."
-        echo "  SONAR_TOKEN=<go-to-your-sonarcloud-and-create-token>"
+      command: << include(scripts/analyze-job-help.sh) >>
   - run:
       environment:
         MVN_SETTINGS_FILE: << parameters.mvn-settings-file >>
         SONAR_PROJECT_KEY: << parameters.project-key >>
       name: Publish code coverage report to sonarcloud
-      command: <<include(scripts/analyze.sh)>>
+      command: << include(scripts/analyze.sh) >>
