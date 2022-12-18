@@ -7,6 +7,11 @@ filters: &filters
   tags:
     only: /.*/
 
+parameters:
+  docker-index:
+    type: string
+    default: 'hub.docker.com'
+
 jobs:
   # Create a job to test the commands of your orbs.
   # You may want to add additional validation steps to ensure the commands are working as expected.
@@ -28,7 +33,7 @@ workflows:
           app-name: 'mvn-java-orb'
           app-version: << pipeline.git.revision >>
           docker-file: 'src/examples/Dockerfile'
-          docker-index-url: << pipeline.parameters.docker-index >>
+          docker-index-url: << parameters.docker-index >>
       - orb-tools/pack:
           filters: *filters
       - orb-tools/publish:
