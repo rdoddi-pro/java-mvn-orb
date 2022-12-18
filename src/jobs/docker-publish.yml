@@ -45,7 +45,7 @@ steps:
   - run:
       name: "Copy build content from upstream jobs"
       command: |
-        cp -r $WORKSPACE_ROOT/<< parameters.build-env >>/* ./
+        cp -r $WORKSPACE_ROOT/<< parameters.build-env >>/service/* ./
   - setup_remote_docker:
       version: 20.10.14
       docker_layer_caching: true

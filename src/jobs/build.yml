@@ -25,3 +25,14 @@ steps:
         MVN_SETTINGS_FILE: << parameters.mvn-settings-file >>
       name: Deploy mvn artifact to repository
       command: << include(scripts/build.sh) >>
+  - persist_to_workspace:
+      root: ~/project
+      # create env paths to avoid collision of different builds.
+      # dev/build, test/build, prod/build
+      paths:
+        - << parameters.build_env >>/service/target
+        - << parameters.build_env >>/service/pom.xml
+        - << parameters.build_env >>/service/Dockerfile*
+  - run:
+      name: "(debug) List persisted assets"
+      command: find $WORKSPACE_ROOT -maxdepth 2 -type f
