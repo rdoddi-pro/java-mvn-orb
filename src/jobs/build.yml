@@ -17,6 +17,9 @@ parameters:
       Custom mvn settings file path.
       Helpful to centralize private repos, plugin, configs.
       Example: .circleci/mvn-settings.xml
+  build-env:
+    type: string
+    default: dev
 
 steps:
   - checkout
@@ -30,9 +33,9 @@ steps:
       # create env paths to avoid collision of different builds.
       # dev/build, test/build, prod/build
       paths:
-        - << parameters.build_env >>/service/target
-        - << parameters.build_env >>/service/pom.xml
-        - << parameters.build_env >>/service/Dockerfile*
+        - << parameters.build-env >>/service/target
+        - << parameters.build-env >>/service/pom.xml
+        - << parameters.build-env >>/service/Dockerfile*
   - run:
       name: "(debug) List persisted assets"
       command: find $WORKSPACE_ROOT -maxdepth 2 -type f
