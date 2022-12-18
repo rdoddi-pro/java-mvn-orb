@@ -7,7 +7,7 @@ parameters:
 steps:
   - run:
       name: Pre-requisites (README)
-      command: provide NEXUS_RM_USERNAME and NEXUS_RM_PASSWORD thru context.
+      command: echo "set NEXUS_RM_USERNAME, NEXUS_RM_PASSWORD thru context"
   - run:
       environment:
         INDEX_URL: <<parameters.index-url>>
