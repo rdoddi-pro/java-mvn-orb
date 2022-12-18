@@ -1,0 +1,36 @@
+# CircleCI job.
+# Author: Ramesh Doddi
+
+description: >
+  Analyzes the code using sonar stack and publishes report to sonar repository.
+
+executor: openjdk
+
+working_directory: ~/project
+
+parameters:
+  mvn-settings-file:
+    type: string
+    default: ''
+    description: |
+      Custom mvn settings file path.
+      Helpful to centralize private repos, plugin, configs.
+      Example: .circleci/mvn-settings.xml
+  project-key:
+    type: string
+    default: honeybricks_content-svc
+    description: |
+      Sonar project key (set this at your sonarcloud account and supply here).
+      Default is project repo name.
+
+steps:
+  - checkout
+  - run:
+      name: Job pre-requisites (README)
+      command: << include(scripts/analyze-job-help.sh) >>
+  - run:
+      environment:
+        MVN_SETTINGS_FILE: << parameters.mvn-settings-file >>
+        SONAR_PROJECT_KEY: << parameters.project-key >>
+      name: Publish code coverage report to sonarcloud
+      command: << include(scripts/analyze.sh) >>
