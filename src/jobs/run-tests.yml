@@ -19,5 +19,5 @@ steps:
   - run:
       environment:
         MVN_SETTINGS_FILE: << parameters.mvn-settings-file >>
-      name: Deploy mvn artifact to repository
+      name: Run tests
       command: << include(scripts/run-tests.sh) >>
