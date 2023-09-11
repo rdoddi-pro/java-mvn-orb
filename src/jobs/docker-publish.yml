@@ -68,6 +68,14 @@ steps:
         - run:
             name: "Add the 'rc' tag for Release Candidate images"
             command: << include(scripts/docker-tag-rc.sh) >>
+  - when:
+      condition:
+        # execute the following step only for prod-cd pipeline
+        equal: [<< parameters.build-env >>, "ga"]
+      steps:
+        - run:
+            name: "Add the 'ga' tag for Release images"
+            command: << include(scripts/docker-tag-ga.sh) >>
   - run:
       name: "Push to container registry"
       command: docker push --all-tags $CACHE_IMAGE
