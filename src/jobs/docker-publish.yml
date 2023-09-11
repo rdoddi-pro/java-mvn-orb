@@ -10,7 +10,7 @@ resource_class: small
 parameters:
   build-env:
     type: string
-    default: dev
+    default: snapshot
   app-name:
     type: string
   app-version:
@@ -55,7 +55,7 @@ steps:
   - when:
       condition:
         # execute the following step for dev-cd pipeline
-        equal: [<< parameters.build-env >>, "dev"]
+        equal: [<< parameters.build-env >>, "snapshot"]
       steps:
         - run:
             name: "Add the 'snapshot' tag for dev images"
@@ -63,11 +63,19 @@ steps:
   - when:
       condition:
         # execute the following step only for test-cd pipeline
-        equal: [<< parameters.build-env >>, "test"]
+        equal: [<< parameters.build-env >>, "rc"]
       steps:
         - run:
             name: "Add the 'rc' tag for Release Candidate images"
             command: << include(scripts/docker-tag-rc.sh) >>
+  - when:
+      condition:
+        # execute the following step only for prod-cd pipeline
+        equal: [<< parameters.build-env >>, "ga"]
+      steps:
+        - run:
+            name: "Add the 'ga' tag for Release images"
+            command: << include(scripts/docker-tag-ga.sh) >>
   - run:
       name: "Push to container registry"
       command: docker push --all-tags $CACHE_IMAGE
